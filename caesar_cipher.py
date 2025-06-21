@@ -1,33 +1,39 @@
-# Simple Caesar Cipher in Python
-
 def encrypt(text, shift):
     result = ""
     for char in text:
         if char.isalpha():
-            # Keep case (upper or lower)
             base = ord('A') if char.isupper() else ord('a')
-            # Shift and wrap around alphabet using modulo
             result += chr((ord(char) - base + shift) % 26 + base)
         else:
-            # Leave non-letters unchanged
             result += char
     return result
 
 def decrypt(text, shift):
-    # Decryption is just shifting in the opposite direction
+    # Decrypting is just encrypting with negative shift
     return encrypt(text, -shift)
 
 def main():
-    # User inputs
+    print("=== Caesar Cipher ===")
+    print("Do you want to encrypt or decrypt?")
+    choice = input("Type 'e' for encrypt or 'd' for decrypt: ").lower()
+
+    if choice not in ['e', 'd']:
+        print("Invalid choice. Please run the program again.")
+        return
+
     message = input("Enter your message: ")
-    shift = int(input("Enter shift value (integer): "))
+    try:
+        shift = int(input("Enter shift value (integer): "))
+    except ValueError:
+        print("Invalid shift. Please use an integer.")
+        return
 
-    # Encrypt and decrypt
-    encrypted = encrypt(message, shift)
-    decrypted = decrypt(encrypted, shift)
-
-    print(f"\nEncrypted: {encrypted}")
-    print(f"Decrypted (to verify): {decrypted}")
+    if choice == 'e':
+        result = encrypt(message, shift)
+        print(f"\nEncrypted message: {result}")
+    else:
+        result = decrypt(message, shift)
+        print(f"\nDecrypted message: {result}")
 
 if __name__ == "__main__":
     main()
